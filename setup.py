@@ -1,5 +1,5 @@
 import setuptools
-from ws_tool_name._version import __version__, __tool_name__, __description__
+from ws_ua_wrapper._version import __version__, __tool_name__, __description__
 
 tool_name = 'tool_name'
 
