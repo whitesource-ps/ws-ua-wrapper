@@ -1,0 +1,22 @@
+USER root
+WORKDIR /ws-ua-wrapper
+
+### optional: python3.8 (used with UA flag: 'python.path')
+RUN apt-get update && \
+    apt-get install -y python3.8 python3.8-venv python3-pip && \
+    python3.8 -m pip install --upgrade pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/* && \
+    ln -sf /usr/bin/python3.8 /usr/local/bin/python3 && \
+    ln -sf /usr/bin/python3.8 /usr/local/bin/python
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
+
+COPY requirements.txt ws_sdk-0.0.0.dev0-py3-none-any.whl ./dist/
+COPY ws_ua_wrapper ./ws_ua_wrapper
+ADD "https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar" whitesource/
+RUN pip install dist/ws_sdk-0.0.0.dev0-py3-none-any.whl
+RUN pip install -r dist/requirements.txt
+
+CMD python3 ws_ua_wrapper/ua_wrapper.py
