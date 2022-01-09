@@ -13,7 +13,7 @@ RUN apt-get update && \
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
 
-COPY requirements.txt ws_sdk-0.0.0.dev0-py3-none-any.whl ./dist/
+COPY requirements.txt ./dist/
 COPY ws_ua_wrapper ./ws_ua_wrapper
 ADD "https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar" whitesource/
 RUN pip install dist/ws_sdk-0.0.0.dev0-py3-none-any.whl
