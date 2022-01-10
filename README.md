@@ -30,3 +30,8 @@ Execute:
 docker pull whitesourcetools/ws-ua-wrapper
 docker run --name ws-ua-wrapper -v /<PROJECT_ROOT_DIR>:/SCAN_DIR:ro -e ...
 ```
+
+## Using script to generate Docker Image
+1. Generate new Dockerfile by executing: `python3 prep_dockerfile.py`
+2. Edit the file according to your needs (package manager, language tools, etc...).
+3. Build the image.
