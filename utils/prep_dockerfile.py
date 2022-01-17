@@ -3,7 +3,6 @@ import os
 import shutil
 import requests
 
-from ws_ua_wrapper._version import __description__
 from ws_sdk import ws_utilities
 
 DOCKER_FILE = "../resources/DockerfileOfficial"
@@ -73,7 +72,7 @@ def prep_docker_file():
 
 
 def parse_config():
-    parser = argparse.ArgumentParser(description=__description__)
+    parser = argparse.ArgumentParser(description="WS PS Docker Image prepare script")
     parser.add_argument('-i', '--includePackageManager',
                         help="Which Package manager to include",
                         dest='include',
