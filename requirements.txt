@@ -1,3 +1,2 @@
-ibm-secrets-manager-sdk~=1.0.2
 requests~=2.27.1
 ws-sdk~=0.8.8
