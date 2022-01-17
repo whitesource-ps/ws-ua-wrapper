@@ -5,7 +5,7 @@ import requests
 
 from ws_sdk import ws_utilities
 
-DOCKER_FILE = "../resources/DockerfileOfficial"
+DOCKER_FILE = "./resources/DockerfileOfficial"
 DOCKER_FILE_ADDON = "./resources/DockerfileAddon"
 DOCKER_FILE_MERGED = "./Dockerfile"
 ws_ua_docker = "https://github.com/whitesource/unified-agent-distribution/raw/master/dockerized/Dockerfile"
@@ -30,6 +30,9 @@ def get_docker_file_from_gh():
 
     print(f"Downloading docker file from: {ws_ua_docker}")
     req = requests.get(url=ws_ua_docker)
+
+    with open(DOCKER_FILE, 'w') as fp:
+        fp.write(req.text)
 
     return req.text
 
@@ -56,6 +59,7 @@ def prep_docker_file():
         return new_dockerfile
 
     docker_file = get_docker_file_from_gh()
+
     if conf.include == ALL_PKG_MAN:
         print(f"Enabling: {conf.include} package managers")
         docker_file = enable_all_pkg_managers(docker_file)
