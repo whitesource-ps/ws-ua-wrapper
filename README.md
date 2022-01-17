@@ -26,12 +26,13 @@ Docker environment or equivalent.
 ## Deployment of the Docker image
 Execute:
 ```shell
-docker pull whitesourcetools/ws-ua-wrapper
-docker run --name ws-ua-wrapper -v /<PROJECT_ROOT_DIR>:/SCAN_DIR:ro \
+docker pull whitesourcetools/ws_ua_wrapper:<TAG>
+docker run --name <CONTAINER_NAME> -v /<PROJECT_ROOT_DIR>:/SCAN_DIR:ro \
                                 -e WS_ORG_TOKEN=<WS_ORG_TOKEN> \
                                 -e WS_USER_KEY=<WS_USER_KEY> \
                                 -e WS_PROD_TOKEN=<WS_PROD_TOKEN> \
-                                -e WS_PROJ_NANE=<WS_PROJ_NANE>  
+                                -e WS_PROJ_NANE=<WS_PROJ_NANE> \
+                                whitesourcetools/ws_ua_wrapper:<TAG> 
 ```
 
 ## Using script to generate Docker Image
