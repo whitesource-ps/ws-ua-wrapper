@@ -13,12 +13,13 @@ jobs:
     steps:
       - name: Set Environment Variables
         run: |
-          TOOL_NAME=$(echo '${{ github.repository }}' |awk -F '/' '{gsub(/-/, "_", $0) ;print $NF}')
+          TOOL_DIR=$(echo '${{ github.repository }}' |awk -F '/' '{gsub(/-/, "_", $0) ;print $NF}')
+          TOOL_NAME=$(echo $TOOL_DIR | sed 's/^ws_//')
           echo "TOOL_NAME=$TOOL_NAME" >> $GITHUB_ENV
+          echo "TOOL_DIR=$TOOL_DIR" >> $GITHUB_ENV
           echo "RELEASE=false" >> $GITHUB_ENV
           echo "VERSION=0.0.0.ci0" >> $GITHUB_ENV
           echo "INC_PKG_MAN=-i all" >> $GITHUB_ENV
-          echo "TOOL_DIR=$TOOL_NAME" >> $GITHUB_ENV
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
             echo "VERSION=$(echo ${{github.ref}} |  sed -r 's/^[\/a-zA-z-]+//')" >> $GITHUB_ENV
             if [[ $VERSION != *@(a|b)* ]]; then
