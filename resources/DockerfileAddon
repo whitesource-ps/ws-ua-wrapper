@@ -18,4 +18,6 @@ COPY ws_ua_wrapper ./ws_ua_wrapper
 ADD "https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar" whitesource/
 RUN pip install -r dist/requirements.txt
 
+USER ${WSS_USER}
+
 CMD python3 ws_ua_wrapper/ua_wrapper.py
