@@ -50,7 +50,7 @@ def prep_docker_file():
         for line in dockerfile.splitlines():
             if "#RUN" in line:
                 start_uncommenting = True
-            if start_uncommenting and line and line.startswith(("#RUN", "#ENV", "#USER", "#  ", "#\t", "# ARG", "# CMD")):
+            if start_uncommenting and line and line.startswith(("#RUN", "#ENV", "#USER", "#  ", "#\t", "# ARG")):
                 print(f"Uncommenting: {line}")
                 line = line[1:].strip()
 

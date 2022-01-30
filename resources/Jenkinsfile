@@ -1,0 +1,37 @@
+pipeline {
+    environment {
+        registry = "whitesourcetools/ws_ua_wrapper"
+        image_version = "latest"
+        docker_full_name = "${registry}:${image_version}"
+        container_name = "ws_ua_wrapper"
+    }
+    agent any
+    stages{
+        stage('checkout') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/WebGoat/WebGoat.git'
+            }
+        }
+        stage('Scan with WS') {
+            steps {
+                 script {
+                     sh "docker pull ${docker_full_name}"
+                     withCredentials([string(credentialsId: 'ws_org_token', variable: 'ws_org_token'),
+                                      string(credentialsId: 'ws_user_key', variable: 'ws_prod_token'),
+                                      string(credentialsId: 'ws_org_token', variable: 'ws_org_token')]){
+                         sh('docker run --rm \
+                                        --name ${container_name} \
+                                        -v \"`pwd`\":/SCAN_DIR:ro \
+                                        -e WS_ORG_TOKEN=$ws_org_token \
+                                        -e WS_USER_KEY=$ws_user_key \
+                                        -e WS_PROD_TOKEN=$ws_prod_token \
+                                        -e WS_PROJ_NAME=${JOB_NAME} \
+                                        -e DEBUG=1 \
+                                        ${docker_full_name}')
+                                      }
+                 }
+            }
+        }
+    }
+}

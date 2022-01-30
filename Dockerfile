@@ -391,7 +391,7 @@ USER ${WSS_USER}
 # COPY <data-dir> Data
 
 ### base command
-CMD java -jar ./wss/wss-unified-agent.jar -c ./wss/wss-unified-agent.config -d ./Data`
+# CMD java -jar ./wss/wss-unified-agent.jar -c ./wss/wss-unified-agent.config -d ./Data`
 
 
 
@@ -399,7 +399,11 @@ CMD java -jar ./wss/wss-unified-agent.jar -c ./wss/wss-unified-agent.config -d .
 
 
 USER root
-WORKDIR /ws-ua-wrapper
+ENV BASE_DIR /ws-ua-wrapper
+ENV UA_DIR $BASE_DIR/whitesource
+ENV TOOL_DIR $BASE_DIR/ws_ua_wrapper
+
+WORKDIR $BASE_DIR
 
 ### optional: python3.8 (used with UA flag: 'python.path')
 RUN apt-get update && \
@@ -413,11 +417,12 @@ RUN apt-get update && \
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
 
-COPY requirements.txt ./dist/
-COPY ws_ua_wrapper ./ws_ua_wrapper
-ADD "https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar" whitesource/
-RUN pip install -r dist/requirements.txt
+COPY requirements.txt $BASE_DIR
+COPY ws_ua_wrapper $TOOL_DIR
+ADD "https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar" $UA_DIR/
+RUN pip install -r ./requirements.txt
 
+RUN chown -R ${WSS_USER}:${WSS_GROUP} $BASE_DIR
 USER ${WSS_USER}
 
-CMD python3 ws_ua_wrapper/ua_wrapper.py
+CMD python3 $TOOL_DIR/ua_wrapper.py
