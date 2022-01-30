@@ -1,7 +1,7 @@
 import logging
 import os
 
-from ws_sdk import WSClient
+from ws_sdk.client import WSClient
 
 from _version import __tool_name__, __version__, __description__
 
