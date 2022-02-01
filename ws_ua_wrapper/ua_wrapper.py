@@ -23,26 +23,26 @@ sdk_logger.addHandler(s_handler)
 sdk_logger.propagate = False
 
 UA_DIR = "whitesource"
-URL = "saas"
 
 
 def get_ws_scopes() -> tuple:
     project_name = os.environ['WS_PROJ_NAME']
     product_token = os.environ['WS_PROD_TOKEN']
     org_token = os.environ['WS_ORG_TOKEN']
+    ws_url = os.environ.get('WS_URL', "saas")
 
-    return project_name, product_token, org_token
+    return project_name, product_token, org_token, ws_url
 
 
 def main():
     logger.info(f"Starting {__description__}. Version {__version__}")
     tool_details = (f"ps-{__tool_name__.replace('_','-')}", __version__)
     user_key = os.environ['WS_USER_KEY']
-    project_name, product_token, org_token = get_ws_scopes()
+    project_name, product_token, org_token,ws_url = get_ws_scopes()
 
     ws_client = WSClient(user_key=user_key,
                          token=org_token,
-                         url=URL,
+                         url=ws_url,
                          tool_details=tool_details,
                          skip_ua_download=True,
                          ua_path=os.path.join(os.getcwd(), UA_DIR))

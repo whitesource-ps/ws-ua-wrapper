@@ -27,6 +27,7 @@ pipeline {
                                         -e WS_USER_KEY=$ws_user_key \
                                         -e WS_PROD_TOKEN=$ws_prod_token \
                                         -e WS_PROJ_NAME=$JOB_NAME \
+                                        -e WS_PROJ_NAME=https://saas.whitesourcesoftware.com \
                                         -e DEBUG=1 \
                                         ${docker_full_name}')
                                       }

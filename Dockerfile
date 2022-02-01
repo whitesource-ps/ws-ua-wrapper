@@ -101,9 +101,9 @@ RUN apt-get update && \
 RUN npm i -g yarn@1.5.1
 
 #### Install Bower + provide premmsions
-RUN npm i -g bower --allow-root && \
-echo '{ "allow_root": true }' > ${WSS_USER_HOME}/.bowerrc && \
-chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.bowerrc
+#RUN npm i -g bower --allow-root && \
+#	echo '{ "allow_root": true }' > ${WSS_USER_HOME}/.bowerrc && \
+#	chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.bowerrc
 
 ARG GRADLE_VERSION=6.0.1
 
@@ -135,89 +135,89 @@ RUN python -m pip install --upgrade pip && \
 
 
 #### optional: python3.7 (used with UA flag: 'python.path')
-RUN apt-get update && \
-apt-get install -y python3.7 python3.7-venv && \
-python3.7 -m pip install --upgrade pip && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#    apt-get install -y python3.7 python3.7-venv && \
+#    python3.7 -m pip install --upgrade pip && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/* && \
+#    rm -rf /tmp/*
 
 
 #### optional: python3.8 (used with UA flag: 'python.path')
-RUN apt-get update && \
-apt-get install -y python3.8 python3.8-venv && \
-python3.8 -m pip install --upgrade pip && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#    apt-get install -y python3.8 python3.8-venv && \
+#    python3.8 -m pip install --upgrade pip && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/* && \
+#    rm -rf /tmp/*
 
 
 ### Install Conda (python)
-USER ${WSS_USER}
-RUN cd ${WSS_USER_HOME} && \
-wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh && \
-bash Anaconda3-2021.05-Linux-x86_64.sh -b && \
-rm Anaconda3-2021.05-Linux-x86_64.sh
+#USER ${WSS_USER}
+#RUN cd ${WSS_USER_HOME} && \
+#    wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh && \
+#    bash Anaconda3-2021.05-Linux-x86_64.sh -b && \
+#    rm Anaconda3-2021.05-Linux-x86_64.sh
 #
-USER root
-RUN echo '#!/usr/bin/env bash' >> /usr/bin/conda && \
-echo 'source ${WSS_USER_HOME}/anaconda3/etc/profile.d/conda.sh' >> /usr/bin/conda && \
-echo '${WSS_USER_HOME}/anaconda3/bin/conda "$@"' >> /usr/bin/conda && \
-chmod +x /usr/bin/conda
+#USER root
+#RUN echo '#!/usr/bin/env bash' >> /usr/bin/conda && \
+#    echo 'source ${WSS_USER_HOME}/anaconda3/etc/profile.d/conda.sh' >> /usr/bin/conda && \
+#    echo '${WSS_USER_HOME}/anaconda3/bin/conda "$@"' >> /usr/bin/conda && \
+#    chmod +x /usr/bin/conda
 
 
 #### Install Poetry (python)
 #### requires python3.X version matching the projects (defaults to python3.6)
 #### sed command sets the default selected python-executable used by poetry to be 'python3'
-ENV POETRY_HOME ${WSS_USER_HOME}/.poetry
-RUN curl -sSLO https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py && \
-sed -i 's/allowed_executa11bles = \["python", "python3"\]/allowed_executables = \["python3", "python"\]/g' get-poetry.py && \
-python3 get-poetry.py --yes --version 1.0.5 && \
-chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.poetry && \
-rm -rf get-poetry.py
-ENV PATH ${WSS_USER_HOME}/.poetry/bin:${PATH}
+#ENV POETRY_HOME ${WSS_USER_HOME}/.poetry
+#RUN curl -sSLO https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py && \
+#	sed -i 's/allowed_executa11bles = \["python", "python3"\]/allowed_executables = \["python3", "python"\]/g' get-poetry.py && \
+#	python3 get-poetry.py --yes --version 1.0.5 && \
+#	chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.poetry && \
+#	rm -rf get-poetry.py
+#ENV PATH ${WSS_USER_HOME}/.poetry/bin:${PATH}
 
 
 #### Install Ruby
-RUN apt-get update && \
-apt-get install -y ruby ruby-dev ruby-bundler && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#	apt-get install -y ruby ruby-dev ruby-bundler && \
+#    apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
 
 
 #### Install rbenv and ruby-build
 ### or maybe be saved to /etc/profile instead of /etc/profile.d/
-RUN git clone https://github.com/sstephenson/rbenv.git ${WSS_USER_HOME}/.rbenv; \
-git clone https://github.com/sstephenson/ruby-build.git ${WSS_USER_HOME}/.rbenv/plugins/ruby-build; \
-${WSS_USER_HOME}/.rbenv/plugins/ruby-build/install.sh && \
-echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh && \
-echo 'eval "$(rbenv init -)"' >> ${WSS_USER_HOME}/.bashrc && \
-chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.rbenv ${WSS_USER_HOME}/.bashrc
-ENV PATH ${WSS_USER_HOME}/.rbenv/bin:$PATH
+#RUN git clone https://github.com/sstephenson/rbenv.git ${WSS_USER_HOME}/.rbenv; \
+#	git clone https://github.com/sstephenson/ruby-build.git ${WSS_USER_HOME}/.rbenv/plugins/ruby-build; \
+#	${WSS_USER_HOME}/.rbenv/plugins/ruby-build/install.sh && \
+#	echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh && \
+#	echo 'eval "$(rbenv init -)"' >> ${WSS_USER_HOME}/.bashrc && \
+#	chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.rbenv ${WSS_USER_HOME}/.bashrc
+#ENV PATH ${WSS_USER_HOME}/.rbenv/bin:$PATH
 
 
 #### Install GO:
-ARG GOLANG_VERSION=1.17.1
-USER ${WSS_USER}
-RUN mkdir -p ${WSS_USER_HOME}/goroot && \
-curl https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar xvzf - -C ${WSS_USER_HOME}/goroot --strip-components=1
+# ARG GOLANG_VERSION=1.17.1
+#USER ${WSS_USER}
+#RUN mkdir -p ${WSS_USER_HOME}/goroot && \
+#   curl https://storage.googleapis.com/golang/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar xvzf - -C ${WSS_USER_HOME}/goroot --strip-components=1
 ### Set GO environment variables
-ENV GOROOT ${WSS_USER_HOME}/goroot
-ENV GOPATH ${WSS_USER_HOME}/gopath
-ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
+#ENV GOROOT ${WSS_USER_HOME}/goroot
+#ENV GOPATH ${WSS_USER_HOME}/gopath
+#ENV PATH $GOROOT/bin:$GOPATH/bin:$PATH
 ### Install package managers
 #
-RUN go install github.com/tools/godep@latest
-RUN go install github.com/LK4D4/vndr@latest
-RUN go install  github.com/kardianos/govendor@latest
+#RUN go install github.com/tools/godep@latest
+#RUN go install github.com/LK4D4/vndr@latest
+#RUN go install  github.com/kardianos/govendor@latest
 #
 ##All Deparacted/archived go package managers
 ## RUN go install  github.com/gpmgo/gopm@latest
 ## RUN go install  github.com/golang/dep/cmd/dep@latest
 ## RUN go install github.com/Masterminds/glide@latest
 ## RUN curl https://glide.sh/get | sh
-USER root
+#USER root
 
 
 #### Important note ###
@@ -226,160 +226,160 @@ USER root
 ####    SBT
 ####    Mix/ Hex/ Erlang/ Elixir
 ####    dotnet/nuget cli's
-RUN apt-get update && \
-apt-get install -y --force-yes build-essential && \
-apt-get install -y --force-yes zlib1g-dev libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt-dev && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#	apt-get install -y --force-yes build-essential && \
+#	apt-get install -y --force-yes zlib1g-dev libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt-dev && \
+#	apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
 
 
 #### Install Scala
-ARG SCALA_VERSION=2.12.6
-RUN wget https://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.deb --no-check-certificate && \
-dpkg -i scala-${SCALA_VERSION}.deb && \
-rm scala-${SCALA_VERSION}.deb
+# ARG SCALA_VERSION=2.12.6
+#RUN wget https://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.deb --no-check-certificate && \
+#	dpkg -i scala-${SCALA_VERSION}.deb && \
+#	rm scala-${SCALA_VERSION}.deb
 ### Install SBT
-RUN wget https://github.com/sbt/sbt/releases/download/v1.5.1/sbt-1.5.1.tgz && \
-tar xzvf sbt-1.5.1.tgz -C /usr/share/ && \
-update-alternatives --install /usr/bin/sbt sbt /usr/share/sbt/bin/sbt 9998
-ENV SBT_HOME /usr/share/sbt/bin/
-ENV PATH $PATH:$SBT_HOME
+#RUN wget https://github.com/sbt/sbt/releases/download/v1.5.1/sbt-1.5.1.tgz && \
+#	tar xzvf sbt-1.5.1.tgz -C /usr/share/ && \
+#	update-alternatives --install /usr/bin/sbt sbt /usr/share/sbt/bin/sbt 9998
+#ENV SBT_HOME /usr/share/sbt/bin/
+#ENV PATH $PATH:$SBT_HOME
 
 
 #### Install PHP
-RUN apt-get update && \
-apt-get install -y php7.2 && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#	apt-get install -y php7.2 && \
+#	apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
 ### Install Composer
-RUN curl -s https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
+#RUN curl -s https://getcomposer.org/installer | php
+#RUN mv composer.phar /usr/local/bin/composer
 ### Install PHP Plugins
-RUN apt-get update && \
-apt-get install -y php7.2-mbstring && \
-apt-get install -y php7.2-dom && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#	apt-get install -y php7.2-mbstring && \
+#	apt-get install -y php7.2-dom && \
+#	apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
 
 
 #### Install Mix/ Hex/ Erlang/ Elixir
-RUN wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && \
-dpkg -i erlang-solutions_2.0_all.deb && \
-apt-get update && \
-apt-get install esl-erlang -y && \
-apt-get install elixir -y && \
-mix local.hex --force && \
-rm erlang-solutions_2.0_all.deb && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && \
+#	dpkg -i erlang-solutions_2.0_all.deb && \
+#	apt-get update && \
+#	apt-get install esl-erlang -y && \
+#	apt-get install elixir -y && \
+#	mix local.hex --force && \
+#	rm erlang-solutions_2.0_all.deb && \
+#	apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
 
 
 #### Install Cocoapods
-RUN gem install cocoapods -v 1.10.2
-RUN adduser cocoapods
-USER cocoapods
-RUN pod setup
-USER root
+#RUN gem install cocoapods -v 1.10.2
+#RUN adduser cocoapods
+#USER cocoapods
+#RUN pod setup
+#USER root
 
 
 #### Install R and Packrat
-RUN apt-get update && \
-apt-get install -y r-base libopenblas-base r-base gdebi && \
-wget https://download1.rstudio.org/rstudio-xenial-1.1.419-amd64.deb && \
-gdebi rstudio-xenial-1.1.419-amd64.deb && \
-rm rstudio-xenial-1.1.419-amd64.deb && \
-R -e 'install.packages("packrat" , repos="http://cran.us.r-project.org");'  && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#	apt-get install -y r-base libopenblas-base r-base gdebi && \
+#	wget https://download1.rstudio.org/rstudio-xenial-1.1.419-amd64.deb && \
+#	gdebi rstudio-xenial-1.1.419-amd64.deb && \
+#	rm rstudio-xenial-1.1.419-amd64.deb && \
+#	R -e 'install.packages("packrat" , repos="http://cran.us.r-project.org");'  && \
+#	apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
 
 
 #### Install Cabal
-ARG HASKELL_GHC_VERSION=8.6.5
-ARG CABAL_VERSION=3.2
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 063DAB2BDC0B3F9FCEBC378BFF3AEACEF6F88286 && \
-echo "deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main " | tee /etc/apt/sources.list.d/ppa_hvr_ghc.list && \
-apt-get update && \
-apt-get install -y ghc-${HASKELL_GHC_VERSION} cabal-install-${CABAL_VERSION} && \
-PATH="/opt/ghc/bin:${PATH}" && \
-cabal update && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
-ENV PATH /opt/ghc/bin:$PATH
+# ARG HASKELL_GHC_VERSION=8.6.5
+# ARG CABAL_VERSION=3.2
+#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 063DAB2BDC0B3F9FCEBC378BFF3AEACEF6F88286 && \
+#	echo "deb http://ppa.launchpad.net/hvr/ghc/ubuntu bionic main " | tee /etc/apt/sources.list.d/ppa_hvr_ghc.list && \
+#	apt-get update && \
+#	apt-get install -y ghc-${HASKELL_GHC_VERSION} cabal-install-${CABAL_VERSION} && \
+#	PATH="/opt/ghc/bin:${PATH}" && \
+#	cabal update && \
+#	apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
+#ENV PATH /opt/ghc/bin:$PATH
 
 
 #### Install dotnet cli and Nuget
-RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
-dpkg -i packages-microsoft-prod.deb && \
-apt-get update && \
-apt-get install -y apt-transport-https && \
-apt-get install -y dotnet-sdk-2.2 && \
-apt-get install -y dotnet-sdk-3.1 && \
-apt-get install -y dotnet-sdk-5.0 && \
-rm packages-microsoft-prod.deb && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
+#	dpkg -i packages-microsoft-prod.deb && \
+#	apt-get update && \
+#	apt-get install -y apt-transport-https && \
+#	apt-get install -y dotnet-sdk-2.2 && \
+#	apt-get install -y dotnet-sdk-3.1 && \
+#	apt-get install -y dotnet-sdk-5.0 && \
+#	rm packages-microsoft-prod.deb && \
+#	apt-get clean && \
+#	rm -rf /var/lib/apt/lists/* && \
+#	rm -rf /tmp/*
 
 
 ### Install Mono
-RUN apt-get update && \
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
-apt-get install -y --no-install-recommends apt-transport-https ca-certificates && \
-echo "deb https://download.mono-project.com/repo/ubuntu bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list && \
-apt-get update && \
-apt-get install -y mono-devel && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /tmp/*
+#RUN apt-get update && \
+#    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+#    apt-get install -y --no-install-recommends apt-transport-https ca-certificates && \
+#    echo "deb https://download.mono-project.com/repo/ubuntu bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list && \
+#    apt-get update && \
+#    apt-get install -y mono-devel && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/* && \
+#    rm -rf /tmp/*
 
 #### Install Nuget CLI
-RUN TMP=/tmp/nuget  && \
-LIB=/usr/local/lib && \
-BIN=/usr/local/bin && \
-rm -rf $TMP $LIB/nuget $BIN/nuget && \
-mkdir -p $TMP && \
-cd $TMP && \
-wget -O nuget.zip https://www.nuget.org/api/v2/package/NuGet.CommandLine/5.10.0 && \
-unzip nuget.zip && \
-install -d $LIB/nuget  && \
-install ./tools/NuGet.exe $LIB/nuget/ && \
-echo '#!/usr/bin/env bash\nexec mono /usr/local/lib/nuget/NuGet.exe "$@"\n' > $BIN/nuget && \
-chmod a+x $BIN/nuget && \
-rm -rf $TMP
+#RUN TMP=/tmp/nuget  && \
+#    LIB=/usr/local/lib && \
+#    BIN=/usr/local/bin && \
+#    rm -rf $TMP $LIB/nuget $BIN/nuget && \
+#    mkdir -p $TMP && \
+#    cd $TMP && \
+#    wget -O nuget.zip https://www.nuget.org/api/v2/package/NuGet.CommandLine/5.10.0 && \
+#	 unzip nuget.zip && \
+#    install -d $LIB/nuget  && \
+#    install ./tools/NuGet.exe $LIB/nuget/ && \
+#	 echo '#!/usr/bin/env bash\nexec mono /usr/local/lib/nuget/NuGet.exe "$@"\n' > $BIN/nuget && \
+#	 chmod a+x $BIN/nuget && \
+#	 rm -rf $TMP
 
 
 ## Install Paket
-RUN mozroots --import --sync && \
-TMP=/tmp/paket/src  && \
-LIB=/usr/local/lib && \
-BIN=/usr/local/bin && \
-rm -rf $TMP && \
-mkdir -p $TMP && \
-cd $TMP && \
-wget -O paket.zip https://www.nuget.org/api/v2/package/Paket/5.257.0 && \
-unzip paket.zip && \
-rm -rf $LIB/paket && \
-install -d $LIB/paket  && \
-install ./tools/paket.exe $LIB/paket/ && \
-rm -rf $BIN/paket && \
-echo '#!/usr/bin/env bash\nexec mono /usr/local/lib/paket/paket.exe "$@"\n' > $BIN/paket && \
-chmod a+x $BIN/paket
+#RUN mozroots --import --sync && \
+#    TMP=/tmp/paket/src  && \
+#    LIB=/usr/local/lib && \
+#    BIN=/usr/local/bin && \
+#    rm -rf $TMP && \
+#    mkdir -p $TMP && \
+#    cd $TMP && \
+#    wget -O paket.zip https://www.nuget.org/api/v2/package/Paket/5.257.0 && \
+#    unzip paket.zip && \
+#    rm -rf $LIB/paket && \
+#    install -d $LIB/paket  && \
+#    install ./tools/paket.exe $LIB/paket/ && \
+#    rm -rf $BIN/paket && \
+#	 echo '#!/usr/bin/env bash\nexec mono /usr/local/lib/paket/paket.exe "$@"\n' > $BIN/paket && \
+#    chmod a+x $BIN/paket
 
 
 #### Install Cargo
-ENV HOME ${WSS_USER_HOME}
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
-chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.cargo && \
-chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.rustup && \
-rm -rf /tmp/*
-ENV PATH $HOME/.cargo/bin:$PATH
-ENV HOME /root
+#ENV HOME ${WSS_USER_HOME}
+#RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+#	chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.cargo && \
+#	chown -R ${WSS_USER}:${WSS_GROUP} ${WSS_USER_HOME}/.rustup && \
+#	rm -rf /tmp/*
+#ENV PATH $HOME/.cargo/bin:$PATH
+#ENV HOME /root
 
 ### Switch User ###
 ENV HOME ${WSS_USER_HOME}
@@ -392,7 +392,6 @@ USER ${WSS_USER}
 
 ### base command
 # CMD java -jar ./wss/wss-unified-agent.jar -c ./wss/wss-unified-agent.config -d ./Data`
-
 
 
 ############################PS Addons############################
