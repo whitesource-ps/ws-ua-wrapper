@@ -1,26 +1,44 @@
 [![Logo](https://whitesource-resources.s3.amazonaws.com/ws-sig-images/Whitesource_Logo_178x44.png)](https://www.whitesourcesoftware.com/)  
 [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
-[![CI](https://github.com/whitesource-ps/ws-tool-name/actions/workflows/ci.yml/badge.svg)](https://github.com/whitesource-ps/ws-tool-name/actions/workflows/ci.yml)
-[![Python 3.6](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Blue_Python_3.6%2B_Shield_Badge.svg/86px-Blue_Python_3.6%2B_Shield_Badge.svg.png)](https://www.python.org/downloads/release/python-360/)
-[![GitHub release](https://img.shields.io/github/v/release/whitesource-ps/ws-sbom-spdx-report)](https://github.com/whitesource-ps/ws-tool-name/releases/latest)  
-[![PyPI](https://img.shields.io/pypi/v/ws-tool-name?style=plastic)](https://pypi.org/project/ws-tool-name/)
-# [WhiteSource Tool Name](https://github.com/whitesource-ps/ws-tool-name)
-Tool description
+[![CI](https://github.com/whitesource-ps/ws-ua-wrapper/actions/workflows/ci.yml/badge.svg)](https://github.com/whitesource-ps/ws-ua-wrapper/actions/workflows/ci.yml)
+# [WhiteSource Unified Agent Wrapper](https://github.com/whitesource-ps/ws-ua-wrapper)
+White Source Unified Wrapper delivered as Docker image to simplify UA scan via Docker.
 
-## Supported Operating Systems
-- **Linux (Bash):**	CentOS, Debian, Ubuntu, RedHat
-- **Windows (PowerShell):**	10, 2012, 2016
-- **Docker container
+The tool is delivered as Docker image ready for deployment and as a script to customize the docker prior of building it. 
+
+Parameters:
+
+| Name          | Description                                             |
+|:--------------|:--------------------------------------------------------|
+| WS_ORG_TOKEN  | WhiteSource Organization token to scan into             |
+| WS_USER_KEY   | User key to use for scan*                               |
+| WS_PROD_TOKEN | WhiteSource Product token to scan into                  |
+| WS_PROJ_NANE  | Name of WS project to scan into (Created if not exists) |
+| WS_URL        | URL of WhiteSource app (default: saas)                  |
+| SCAN_DIR      | Directory name to scan                                  |
+
+* Minimal user key permissions: Product Integrator on the scanner project
 
 ## Prerequisites
-Python 3.7+
+Docker environment or equivalent.
 
-## Installation
-1. Download and unzip the tool.
-2. Install requirements: `pip install -r sbom_report/reqirements.txt`
-3. Edit the file **sbom_extra.json** with the appropriate values to complete the report:
+## Deployment of the Docker image
+Execute:
+```shell
+docker pull whitesourcetools/ws_ua_wrapper:<TAG>
+docker run --name <CONTAINER_NAME> -v /<PROJECT_ROOT_DIR>:/SCAN_DIR:ro \
+                                -e WS_ORG_TOKEN=<WS_ORG_TOKEN> \
+                                -e WS_USER_KEY=<WS_USER_KEY> \
+                                -e WS_PROD_TOKEN=<WS_PROD_TOKEN> \
+                                -e WS_PROJ_NANE=<WS_PROJ_NANE> \
+                                -e WS_URL=<WS_URL> \
+                                whitesourcetools/ws_ua_wrapper:<TAG> 
+```
 
-## Usage
+## Using script to generate Docker Image
+1. Generate new Dockerfile (and enable all package managers) by executing: `python3 prep_dockerfile.py -i all`
+2. Edit the file according to your needs (package manager, language tools, etc...).
+3. Build the image.
 
-## Execution
-Execution instructions:
+## Debug
+* Set env var: DEBUG=1

@@ -28,3 +28,4 @@ local-env.*
 /*egg-info/
 
 /out/
+/whitesource/*
