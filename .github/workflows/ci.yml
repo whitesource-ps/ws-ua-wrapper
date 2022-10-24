@@ -50,19 +50,19 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --ignore=E501,F841
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Generate DockerImage file
-        run: python3 utils/prep_dockerfile.py
-      - name: Prepare tag
-        if: contains(github.ref, 'refs/tags/')
-        id: prep
-        run: |
-          DOCKER_IMAGE=whitesourcetools/$TOOL_NAME
-          TAGS="${DOCKER_IMAGE}:latest"
-          if [[ $GITHUB_REF == refs/tags/v* ]]; then
-            TAG_V=${GITHUB_REF#refs/tags/v}
-            TAGS="$TAGS,${DOCKER_IMAGE}:${TAG_V}"
-          fi
-          echo ::set-output name=tags::${TAGS}
+#      - name: Generate DockerImage file
+#        run: python3 utils/prep_dockerfile.py
+#      - name: Prepare tag
+#        if: contains(github.ref, 'refs/tags/')
+#        id: prep
+#        run: |
+#          DOCKER_IMAGE=whitesourcetools/$TOOL_NAME
+#          TAGS="${DOCKER_IMAGE}:latest"
+#          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+#            TAG_V=${GITHUB_REF#refs/tags/v}
+#            TAGS="$TAGS,${DOCKER_IMAGE}:${TAG_V}"
+#          fi
+#          echo ::set-output name=tags::${TAGS}
 #      - name: Set up Docker Buildx
 #        if: contains(github.ref, 'refs/tags/')
 #        uses: docker/setup-buildx-action@v1
